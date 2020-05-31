@@ -7,6 +7,10 @@
     <script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
+    <script src="https://unpkg.com/vue-toasted"></script>
+    <script>
+    //    import Toasted from 'vue-toasted';
+    </script> 
 
 </head>
 <body>
@@ -16,20 +20,23 @@
                 <div class="col-md-6 mx-auto">
                     <h1 class="text-center">TODO list app</h1>
                     <form v-on:submit.prevent="addNewTodo">
-                        <label for="taskname">Task Name</label>
-                        <input type="text" v-model="newTodoText" id="taskname" class="form-control" placeholder="Add new Task">
+                        <label for="taskname">Add Task</label>
+                        <input style="margin: .5em;" type="text" v-model="newTodoText" id="taskname" class="form-control" placeholder="Add new Task">
+                        <input style="margin: .5em;" type="time" v-model="newTododead" id="deadline" class="form-control" placeholder="Dead line">
                         <button class="btn btn-success btn-block mt-3">submit</button>
                     </form>
                     <table class="table mt-3">
-                        <tr is="todo-item" v-for="(todo,index) in todos" v-bind:key="todo.id" v-bind:title="todo.title" v-on:remove="todos.splice(index,1)"></tr>
+                        <tr is="todo-item" v-for="(todo,index) in todos" v-bind:key="todo.id" v-bind:title="todo.task" v-on:remove="todos.splice(index,1)"></tr>
                     </table>                        
                 </div>
             </div>
         </div>
     </div>
 
-    
+
 <script>
+    Vue.use(Toasted)
+
     var MyComponent = Vue.extend({
         template : `
         <my-component
@@ -61,18 +68,30 @@
         el: '#todo-list',
         data: {
             newTodoText: '',
+            newTododead: '',
             todos: [],
             nextTodoId: 1
         },
         methods: {
             addNewTodo: function() {
+                if(this.newTodoText ===''){
+                let myToast = this.$toasted.show("Helloo");
+                myToast.text("SORRY! It is mandatory to specify Title").goAway(1500);
+                }
+                else if(this.newTododead ===''){
+                let myToast = this.$toasted.show("Helloo");
+                myToast.text("SORRY! It is mandatory to specify Deadline").goAway(1500);
+                }
+                else{
                 this.todos.push({
                     id: this.newTodoId++,
-                    title: this.newTodoText
+                    task: this.newTodoText +' - ('+this.newTododead+')'
                 })
-                this.newTodoText = ''
+                this.newTodoText = '';
+                this.newTododead = '';
+                }
             }
-        }
+                    }
     })
 </script>
  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
