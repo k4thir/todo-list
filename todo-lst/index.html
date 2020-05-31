@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TODO APP</title>
     <script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
     <script src="https://unpkg.com/vue-toasted"></script>
-    <script>
-    //    import Toasted from 'vue-toasted';
-    </script> 
+  
 
 </head>
 <body>
@@ -18,13 +16,17 @@
         <div id="todo-list" class="container">
             <div class="row">
                 <div class="col-md-6 mx-auto">
-                    <h1 class="text-center">TODO list app</h1>
-                    <form v-on:submit.prevent="addNewTodo">
-                        <label for="taskname">Add Task</label>
+                    <h1 style="margin-top: 2em; font-style:oblique; font-weight: bolder; color: blueviolet;" class="text-center">TODO List</h1>
+                    <form id ="form">
+                        <label style="margin-top: 2em; font-style: italic; color: blue;" for="taskname">Add Task</label>
                         <input style="margin: .5em;" type="text" v-model="newTodoText" id="taskname" class="form-control" placeholder="Add new Task">
-                        <input style="margin: .5em;" type="time" v-model="newTododead" id="deadline" class="form-control" placeholder="Dead line">
-                        <button class="btn btn-success btn-block mt-3">submit</button>
+                        <input  style="margin: .5em;" type="time" v-model="newTododead" id="deadline" class="form-control " placeholder="Dead line">
+                        <button type= "button" class="btn btn-success btn-block mt-3" v-on:click = 'addNewTodo()'>submit</button>
+                        <button type= "button" class="btn btn-warning btn-block mt-3" v-on:click = 'resetTodo($event)'>reset</button>
+                        
+                       
                     </form>
+                    <p style="margin: 1em 0px; font-style: italic; color: blue;">List of tasks Added</p>
                     <table class="table mt-3">
                         <tr is="todo-item" v-for="(todo,index) in todos" v-bind:key="todo.id" v-bind:title="todo.task" v-on:remove="todos.splice(index,1)"></tr>
                     </table>                        
@@ -36,7 +38,7 @@
 
 <script>
     Vue.use(Toasted)
-
+    
     var MyComponent = Vue.extend({
         template : `
         <my-component
@@ -90,6 +92,10 @@
                 this.newTodoText = '';
                 this.newTododead = '';
                 }
+            },
+            resetTodo:function(event){
+                var formComponent = document.getElementById('form');
+                formComponent.reset();
             }
                     }
     })
